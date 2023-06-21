@@ -13,12 +13,24 @@ import {
   Platform} from "react-native";
 import bgImage from '../assets/PhotoBg.png';
 
+const initialData = {
+  email: '',
+  password: ''
+}
+
 export const LoginScreen = () => {
-  [isKeyboardShown, setisKeyboardShown] = useState(false);
+  const [isKeyboardShown, setisKeyboardShown] = useState(false);
+  const [formData, setFormData] = useState(initialData);
 
   const keyBoardHide = () => {
     Keyboard.dismiss(); 
     setisKeyboardShown(false);
+  }
+
+    const onSubmit = () => {
+    keyBoardHide();
+    console.log(formData);
+    setFormData(initialData);
   }
    return (
     <TouchableWithoutFeedback onPress={keyBoardHide}>
@@ -33,8 +45,14 @@ export const LoginScreen = () => {
             style={styles.keyBoard}>
       <View style={styles.form}>
         <Text style={styles.header}>Увійти</Text>
-        <TextInput style={styles.textInput} placeholder="Адреса електронної пошти" onFocus={() => setisKeyboardShown(true)}/>
-        <TextInput style={styles.textInput} placeholder="Пароль" secureTextEntry={true} onFocus={() => setisKeyboardShown(true)}/>
+        <TextInput style={styles.textInput} placeholder="Адреса електронної пошти" onFocus={() => setisKeyboardShown(true)}
+        value={formData.email}
+        onChangeText={(value) => setFormData((prevState) => ({...prevState, email: value}))}
+        />
+        <TextInput style={styles.textInput} placeholder="Пароль" secureTextEntry={true} onFocus={() => setisKeyboardShown(true)}
+        value={formData.password}
+        onChangeText={(value) => setFormData((prevState) => ({...prevState, password: value}))}
+        />
         <TouchableOpacity
         activeOpacity={0.7}
         style={styles.inputLink}>
@@ -45,7 +63,7 @@ export const LoginScreen = () => {
         <TouchableOpacity
         activeOpacity={0.7}
         style={styles.button}
-        onPress={keyBoardHide}>
+        onPress={onSubmit}>
       <Text style={styles.appButtonText}>
       Увійти
     </Text>

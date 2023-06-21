@@ -16,15 +16,26 @@ import bgImage from '../assets/PhotoBg.png';
 import avatar from '../assets/avatar.png';
 import { AntDesign } from '@expo/vector-icons';
 
+const initialData = {
+  login: '',
+  email: '',
+  password: ''
+}
 
 export const RegistrationScreen = () => {
-  [isKeyboardShown, setisKeyboardShown] = useState(false);
 
-  console.log(isKeyboardShown);
+  const [isKeyboardShown, setisKeyboardShown] = useState(false);
+  const [formData, setFormData] = useState(initialData);
 
   const keyBoardHide = () => {
     Keyboard.dismiss(); 
     setisKeyboardShown(false);
+  }
+
+  const onSubmit = () => {
+    keyBoardHide();
+    console.log(formData);
+    setFormData(initialData);
   }
 
     return (
@@ -47,9 +58,18 @@ export const RegistrationScreen = () => {
       <AntDesign name="pluscircleo" size={25} color="#FF6C00" backgroundColor="#FFFFFF"/>
       </View>
         <Text style={styles.header}>Реєстрація</Text>
-        <TextInput style={styles.textInput} placeholder="Логін" onFocus={() => setisKeyboardShown(true)}/>
-        <TextInput style={styles.textInput} placeholder="Адреса електронної пошти" onFocus={() => setisKeyboardShown(true)}/>
-        <TextInput style={styles.textInput} placeholder="Пароль" secureTextEntry={true} onFocus={() => setisKeyboardShown(true)}/>
+        <TextInput style={styles.textInput} placeholder="Логін" onFocus={() => setisKeyboardShown(true)}
+        value={formData.login}
+        onChangeText={(value) => setFormData((prevState) => ({...prevState, login: value}))}
+        />
+        <TextInput style={styles.textInput} placeholder="Адреса електронної пошти" onFocus={() => setisKeyboardShown(true)}
+        value={formData.email}
+        onChangeText={(value) => setFormData((prevState) => ({...prevState, email: value}))}
+        />
+        <TextInput style={styles.textInput} placeholder="Пароль" secureTextEntry={true} onFocus={() => setisKeyboardShown(true)}
+        value={formData.password}
+        onChangeText={(value) => setFormData((prevState) => ({...prevState, password: value}))}        
+        />
         <TouchableOpacity
         activeOpacity={0.7}
         style={styles.inputLink}>
@@ -60,7 +80,7 @@ export const RegistrationScreen = () => {
         <TouchableOpacity
         activeOpacity={0.7}
         style={styles.button}
-         onPress={keyBoardHide}
+         onPress={onSubmit}
          >
       <Text style={styles.appButtonText}>
       Зареєстуватися
