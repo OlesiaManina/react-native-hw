@@ -36,12 +36,10 @@ export const LoginScreen = () => {
     <TouchableWithoutFeedback onPress={keyBoardHide}>
 <View style={styles.container}>
     <ImageBackground source={bgImage} resizeMode="cover" 
-    style={{...styles.image, 
-      // paddingTop: isKeyboardShown? 273 : 323,
-    }}>
+    style={styles.image}>
       <KeyboardAvoidingView
-            // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            behavior='position' keyboardVerticalOffset={-300}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? -18 : -18}
             style={styles.keyBoard}>
       <View style={styles.form}>
         <Text style={styles.header}>Увійти</Text>

@@ -44,12 +44,10 @@ export const RegistrationScreen = () => {
         <ImageBackground source={bgImage} resizeMode="cover" 
         style={styles.image}>
           <KeyboardAvoidingView
-          behavior='position' keyboardVerticalOffset={-500}
-            // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? -97 : -97}
             >
-      <View style={{...styles.form, 
-          // paddingBottom: isKeyboardShown? 116 : 45,
-        }}>
+      <View style={styles.form}>
       <Image
         style={styles.imageAvatar}
         // source={avatar}
