@@ -1,15 +1,44 @@
-import React from "react";
-import { StyleSheet, Text, View, ImageBackground, TextInput, Image, TouchableOpacity, Dimensions } from "react-native";
+import React, {useState} from "react";
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  ImageBackground, 
+  TextInput, 
+  Image, 
+  TouchableOpacity, 
+  Dimensions,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform} from "react-native";
 import bgImage from '../assets/PhotoBg.png';
 import avatar from '../assets/avatar.png';
 import { AntDesign } from '@expo/vector-icons';
 
 
 export const RegistrationScreen = () => {
+  [isKeyboardShown, setisKeyboardShown] = useState(false);
+
+  console.log(isKeyboardShown);
+
+  const keyBoardHide = () => {
+    Keyboard.dismiss(); 
+    setisKeyboardShown(false);
+  }
+
     return (
-<View style={styles.container}>
-    <ImageBackground source={bgImage} resizeMode="cover" style={styles.image}>
-      <View style={styles.form}>
+        <TouchableWithoutFeedback onPress={keyBoardHide}>
+      <View style={styles.container}>
+        <ImageBackground source={bgImage} resizeMode="cover" 
+        style={styles.image}>
+          <KeyboardAvoidingView
+          behavior='position' keyboardVerticalOffset={-500}
+            // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            >
+      <View style={{...styles.form, 
+          // paddingBottom: isKeyboardShown? 116 : 45,
+        }}>
       <Image
         style={styles.imageAvatar}
         // source={avatar}
@@ -18,9 +47,9 @@ export const RegistrationScreen = () => {
       <AntDesign name="pluscircleo" size={25} color="#FF6C00" backgroundColor="#FFFFFF"/>
       </View>
         <Text style={styles.header}>Реєстрація</Text>
-        <TextInput style={styles.textInput} placeholder="Логін"/>
-        <TextInput style={styles.textInput} placeholder="Адреса електронної пошти"/>
-        <TextInput style={styles.textInput} placeholder="Пароль" secureTextEntry={true}/>
+        <TextInput style={styles.textInput} placeholder="Логін" onFocus={() => setisKeyboardShown(true)}/>
+        <TextInput style={styles.textInput} placeholder="Адреса електронної пошти" onFocus={() => setisKeyboardShown(true)}/>
+        <TextInput style={styles.textInput} placeholder="Пароль" secureTextEntry={true} onFocus={() => setisKeyboardShown(true)}/>
         <TouchableOpacity
         activeOpacity={0.7}
         style={styles.inputLink}>
@@ -30,7 +59,9 @@ export const RegistrationScreen = () => {
     </TouchableOpacity>
         <TouchableOpacity
         activeOpacity={0.7}
-        style={styles.button}>
+        style={styles.button}
+         onPress={keyBoardHide}
+         >
       <Text style={styles.appButtonText}>
       Зареєстуватися
     </Text>
@@ -43,8 +74,11 @@ export const RegistrationScreen = () => {
     </Text>
     </TouchableOpacity>
       </View>
+      </KeyboardAvoidingView>
     </ImageBackground>
   </View>
+ </TouchableWithoutFeedback>
+
     )
 }
 
@@ -55,15 +89,7 @@ const styles = StyleSheet.create({
     },
     image: {
       flex: 1,
-      justifyContent: 'center',
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height,
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      zIndex: -1
+      justifyContent: 'flex-end',
     },
     header: {
       color: 'black',
@@ -75,16 +101,11 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     form: {
-      position: 'absolute',
       backgroundColor: '#fff',
-      flex: 1,
       paddingHorizontal: 16,
-      width: '100%',
-      height: 812,
-      left: 0,
-      top: 263,
       borderTopLeftRadius: 25,
       borderTopRightRadius: 25,
+      paddingBottom: 45,
     },
     textInput: {
       height: 50,
@@ -133,7 +154,7 @@ const styles = StyleSheet.create({
       width: 120,
       height: 120,
       position: 'absolute',
-      left: 128,
+      alignSelf: 'center',
       top: -60,
       backgroundColor: '#F6F6F6',
       borderRadius: 16,
@@ -147,7 +168,7 @@ const styles = StyleSheet.create({
     },
     inputLink: {
       position: 'absolute',
-      left: 271,
+      right: 32,
       top: 308,
     },
     inputLinkText: {

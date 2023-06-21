@@ -1,15 +1,40 @@
-import React from "react";
-import { StyleSheet, Text, View, ImageBackground, TextInput, TouchableOpacity, Dimensions } from "react-native";
+import React, { useState} from "react";
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  ImageBackground, 
+  TextInput, 
+  TouchableOpacity, 
+  Dimensions,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform} from "react-native";
 import bgImage from '../assets/PhotoBg.png';
 
 export const LoginScreen = () => {
+  [isKeyboardShown, setisKeyboardShown] = useState(false);
+
+  const keyBoardHide = () => {
+    Keyboard.dismiss(); 
+    setisKeyboardShown(false);
+  }
    return (
+    <TouchableWithoutFeedback onPress={keyBoardHide}>
 <View style={styles.container}>
-    <ImageBackground source={bgImage} resizeMode="cover" style={styles.image}>
+    <ImageBackground source={bgImage} resizeMode="cover" 
+    style={{...styles.image, 
+      // paddingTop: isKeyboardShown? 273 : 323,
+    }}>
+      <KeyboardAvoidingView
+            // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            behavior='position' keyboardVerticalOffset={-300}
+            style={styles.keyBoard}>
       <View style={styles.form}>
         <Text style={styles.header}>Увійти</Text>
-        <TextInput style={styles.textInput} placeholder="Адреса електронної пошти"/>
-        <TextInput style={styles.textInput} placeholder="Пароль" secureTextEntry={true}/>
+        <TextInput style={styles.textInput} placeholder="Адреса електронної пошти" onFocus={() => setisKeyboardShown(true)}/>
+        <TextInput style={styles.textInput} placeholder="Пароль" secureTextEntry={true} onFocus={() => setisKeyboardShown(true)}/>
         <TouchableOpacity
         activeOpacity={0.7}
         style={styles.inputLink}>
@@ -19,7 +44,8 @@ export const LoginScreen = () => {
     </TouchableOpacity>
         <TouchableOpacity
         activeOpacity={0.7}
-        style={styles.button}>
+        style={styles.button}
+        onPress={keyBoardHide}>
       <Text style={styles.appButtonText}>
       Увійти
     </Text>
@@ -33,8 +59,10 @@ export const LoginScreen = () => {
     </Text>
     </TouchableOpacity>
       </View>
+      </KeyboardAvoidingView>
     </ImageBackground>
   </View>
+  </TouchableWithoutFeedback>
     )
 }
 
@@ -45,15 +73,7 @@ const styles = StyleSheet.create({
     },
     image: {
       flex: 1,
-      justifyContent: 'center',
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height,
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      zIndex: -1
+      justifyContent: 'flex-end',
     },
     header: {
       color: 'black',
@@ -65,16 +85,11 @@ const styles = StyleSheet.create({
       textAlign: 'center',
     },
     form: {
-      position: 'absolute',
       backgroundColor: '#fff',
-      flex: 1,
       paddingHorizontal: 16,
-      width: '100%',
-      height: 812,
-      left: 0,
-      top: 263,
       borderTopLeftRadius: 25,
       borderTopRightRadius: 25,
+      paddingBottom: 144,
     },
     textInput: {
       height: 50,
@@ -134,7 +149,7 @@ const styles = StyleSheet.create({
     },
     inputLink: {
       position: 'absolute',
-      left: 271,
+      right: 32,
       top: 182,
     },
     inputLinkText: {
