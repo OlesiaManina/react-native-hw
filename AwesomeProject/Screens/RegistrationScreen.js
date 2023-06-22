@@ -7,11 +7,12 @@ import {
   TextInput, 
   Image, 
   TouchableOpacity, 
-  Dimensions,
+  Alert,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
   Platform} from "react-native";
+  import { useNavigation } from '@react-navigation/native';
 import bgImage from '../assets/PhotoBg.png';
 import avatar from '../assets/avatar.png';
 import { AntDesign } from '@expo/vector-icons';
@@ -25,17 +26,41 @@ const initialData = {
 export const RegistrationScreen = () => {
 
   const [isKeyboardShown, setisKeyboardShown] = useState(false);
+  const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [formData, setFormData] = useState(initialData);
+
+  const navigation = useNavigation();
 
   const keyBoardHide = () => {
     Keyboard.dismiss(); 
     setisKeyboardShown(false);
   }
 
-  const onSubmit = () => {
+const onSubmit = () => {
     keyBoardHide();
-    console.log(formData);
-    setFormData(initialData);
+    if (!formData.email.includes('@') || formData.email.length < 7) {
+      Alert.alert(
+        "Your email has to include '@' and be more than 7 symbols!!!",
+      );
+    } else if (formData.password.length < 7) {
+      Alert.alert(
+        "Your password's length must be more than 7 symbols !!!",
+      );
+    } else if (formData.password.length < 7 && !formData.email.includes('@')) {
+      Alert.alert(
+        "Please fill in the fields!",
+      );
+    } else if (!formData.login) {
+      Alert.alert(
+        "Don't forget your login))",
+      );
+    } else {
+      console.log(formData);
+      setFormData(initialData);
+      navigation.navigate('Home', {
+      screen: 'PostsScreen'
+   });
+    }
   }
 
     return (
@@ -64,13 +89,14 @@ export const RegistrationScreen = () => {
         value={formData.email}
         onChangeText={(value) => setFormData((prevState) => ({...prevState, email: value}))}
         />
-        <TextInput style={styles.textInput} placeholder="Пароль" secureTextEntry={true} onFocus={() => setisKeyboardShown(true)}
+        <TextInput style={styles.textInput} placeholder="Пароль" secureTextEntry={isPasswordSecure} onFocus={() => setisKeyboardShown(true)}
         value={formData.password}
         onChangeText={(value) => setFormData((prevState) => ({...prevState, password: value}))}        
         />
         <TouchableOpacity
         activeOpacity={0.7}
-        style={styles.inputLink}>
+        style={styles.inputLink}
+        onPress={() => setIsPasswordSecure(false)}>
       <Text style={styles.inputLinkText}>
       Показати
     </Text>
@@ -86,7 +112,8 @@ export const RegistrationScreen = () => {
     </TouchableOpacity>
     <TouchableOpacity
         activeOpacity={0.7}
-        style={styles.link}>
+        style={styles.link}
+        onPress={() => navigation.navigate("Login")}>
       <Text style={styles.linkText}>
       Вже є акаунт? Увійти
     </Text>

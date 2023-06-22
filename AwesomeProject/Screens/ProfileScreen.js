@@ -5,12 +5,12 @@ import {
     View, 
  } from "react-native";
 
- export const PostsScreen = () => {
+ export const ProfileScreen = () => {
     return (
         <View style={{flex: 1,
             alignItems: "center",
             justifyContent: "center",}}>
-            <Text>PostsScreen</Text>
+            <Text>ProfileScreen</Text>
         </View>
     )
  }
