@@ -61,12 +61,12 @@ export const LoginScreen = () => {
       <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             keyboardVerticalOffset={Platform.OS === 'ios' ? -18 : -18}
-            style={styles.keyBoard}>
+            >
       <View style={styles.form}>
         <Text style={styles.header}>Увійти</Text>
         <TextInput style={styles.textInput} placeholder="Адреса електронної пошти" onFocus={() => setisKeyboardShown(true)}
         value={formData.email}
-        type="email"
+        type="email"a
         onChangeText={(value) => setFormData((prevState) => ({...prevState, email: value}))}
         />
         <TextInput style={styles.textInput} placeholder="Пароль" secureTextEntry={isPasswordSecure} onFocus={() => setisKeyboardShown(true)}
@@ -76,9 +76,9 @@ export const LoginScreen = () => {
         <TouchableOpacity
         activeOpacity={0.7}
         style={styles.inputLink}
-        onPress={() => setIsPasswordSecure(false)}>
+        onPress={() => setIsPasswordSecure(!isPasswordSecure)}>
       <Text style={styles.inputLinkText}>
-      Показати
+      {isPasswordSecure? "Показати" : "Сховати"}
     </Text>
     </TouchableOpacity>
         <TouchableOpacity
@@ -144,10 +144,6 @@ const styles = StyleSheet.create({
       lineHeight: 19,
       shadowColor: '#BDBDBD',
       shadowOpacity: 0.2,
-      shadowOffset: {
-        width: 0,
-        height: 4
-      }
     }, 
     button: {
       height: 51,

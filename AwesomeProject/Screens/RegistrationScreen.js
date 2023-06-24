@@ -96,9 +96,9 @@ const onSubmit = () => {
         <TouchableOpacity
         activeOpacity={0.7}
         style={styles.inputLink}
-        onPress={() => setIsPasswordSecure(false)}>
+        onPress={() => setIsPasswordSecure(!isPasswordSecure)}>
       <Text style={styles.inputLinkText}>
-      Показати
+      {isPasswordSecure? "Показати" : "Сховати"}
     </Text>
     </TouchableOpacity>
         <TouchableOpacity
