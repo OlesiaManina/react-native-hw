@@ -6,12 +6,20 @@ import MapView, { Marker } from "react-native-maps";
 
 export const MapScreen = ({route}) => {
 
+    const location = route.params.location;
+
     return (
         <View style={{flex: 1,}}>
-            <MapView style={{flex: 1,}} showsUserLocation={true} region={{...route.params.location,
+            <MapView style={{flex: 1,}} showsUserLocation={true}         
+            region={{
+          latitude: location.latitude,
+          longitude: location.longitude,
           latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421}}>
-           {location && (<Marker coordinate={route.params.location} title={route.params.name}/>)}
+          longitudeDelta: 0.0421,
+        }}>
+           {location && (<Marker 
+        coordinate={{ latitude: location.latitude, longitude: location.longitude}}
+        title={route.params.name}/>)}
         </MapView>
         </View>
     )
