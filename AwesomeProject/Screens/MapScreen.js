@@ -11,7 +11,7 @@ export const MapScreen = ({route}) => {
             <MapView style={{flex: 1,}} showsUserLocation={true} region={{...route.params.location,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421}}>
-           {location && (<Marker coordinate={{latitude: 37.78825, longitude: -122.4324}} title={route.params.name}/>)}
+           {location && (<Marker coordinate={route.params.location} title={route.params.name}/>)}
         </MapView>
         </View>
     )
