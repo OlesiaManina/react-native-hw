@@ -1,12 +1,10 @@
 import React from "react";
-import { 
-    View, 
- } from "react-native";
+import { View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
 export const MapScreen = ({route}) => {
 
-    const location = route.params.location;
+    const location = route.params.location.coords;
 
     return (
         <View style={{flex: 1,}}>
