@@ -1,5 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import { View, TouchableOpacity } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import {PostsScreen} from './PostsScreen';
@@ -16,12 +17,18 @@ const Tabs = createBottomTabNavigator();
 export const Home = () => {
   const navigation = useNavigation();
 
+  const getTabBarStyle = (route) => {  
+    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Home';
+    let display = (routeName === 'Коментарі') ? 'none':'flex';
+    return {display}
+  }
+
     return (
         <Tabs.Navigator tabBarOptions={{showLabel: false}}>
           <Tabs.Screen name="CommonPostsScreen" component={PostsScreen} 
-          options={{tabBarIcon: ({focused, size, color}) => (<AntDesign name="appstore-o" size={24} color="#212121" />),
-          headerShown: false
-        }}/>
+          options={({route}) =>({ tabBarStyle: getTabBarStyle(route) ,
+          tabBarIcon: ({focused, size, color}) => (<AntDesign name="appstore-o" size={24} color="#212121" />),
+          headerShown: false,})}/>
 
           <Tabs.Screen name="Створити публікацію" component={CreatePostsScreen} 
           options={{tabBarIcon: ({focused, size, color}) => (<View 
@@ -29,17 +36,16 @@ export const Home = () => {
           <Octicons name="plus" size={15} color="#FFF" />
           </View>), 
           headerTitleAlign: 'center', 
-          tabBarStyle: { display: "none" },
+          tabBarStyle: [{ display: "none" }],
           headerLeft: () => (
                 <TouchableOpacity
                 style={{marginLeft: 15}}
-                onPress={() => navigation.navigate("Login")}>
+                onPress={() => navigation.navigate("CommonPostsScreen")}>
                 <Ionicons name="ios-arrow-back-outline" size={28} color="#BDBDBD" />
                 </TouchableOpacity>)}}/>
 
           <Tabs.Screen name="ProfileScreen" component={ProfileScreen} 
           options={{tabBarIcon: ({focused, size, color}) => (<FontAwesome5 name="user" size={24} color="#212121" />)}}/>
         </Tabs.Navigator>
-
   )};
 

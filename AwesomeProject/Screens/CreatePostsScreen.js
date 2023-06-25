@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { 
     StyleSheet, 
     Text, 
@@ -28,7 +28,7 @@ import {
     const [photo, setPhoto] = useState('');
     const [formData, setFormData] = useState(initialData);
     const [isKeyboardShown, setisKeyboardShown] = useState(false);
-    const [location, setLocation] = useState(null);
+    const [locationCoords, setLocationCoords] = useState(null);
 
     const navigation = useNavigation();
 
@@ -39,9 +39,11 @@ import {
 
     const onSubmit = () => {
       keyBoardHide();
-      navigation.navigate('Публікації', {photo, formData, location});
-      setPhoto('');
-      setFormData(initialData);
+      if (photo) {
+        navigation.navigate('Публікації', {photo, formData, locationCoords});
+        setPhoto('');
+        setFormData(initialData);
+      }
     }
 
     const clearScreen = () => {
@@ -50,24 +52,26 @@ import {
     }
 
     const takePhoto = async () => {
+ 
     const photo = await camera.takePictureAsync();
     setPhoto(photo.uri);
     let location = await Location.getCurrentPositionAsync({});
     const coords = {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude};
-    setLocation(coords);
+      setLocationCoords(coords);
     }
 
-    console.log('location', location)
     return (
         <TouchableWithoutFeedback onPress={keyBoardHide}>
         <View style={styles.container}>
           <KeyboardAvoidingView behavior='position'
           keyboardVerticalOffset={Platform.OS === 'ios' ? -103 : -103}>
             <View style={{alignItems: "center", justifyContent: "center",}}>
-            <Camera style={styles.camera} ref={setCamera}>
-                {photo && <Image style={styles.photo} source={{uri: photo}}/>}
+           <Camera style={styles.camera} ref={setCamera} >
+            {photo &&  <View style={styles.photo}> 
+            <Image style={{ width: 347, height: 244, borderRadius: 8,}} source={{uri: photo}}/>
+                  </View>}
             <TouchableOpacity
         activeOpacity={0.7}
         style={{...styles.snapContainer, backgroundColor: photo? "#FFFfff4C" : "#FFF" }}
@@ -77,7 +81,8 @@ import {
     </TouchableOpacity>
     </Camera>
     </View>
-    <Text style={styles.text}>Завантажте фото</Text>
+    {photo? <Text style={styles.text}>Редагувати фото</Text> : <Text style={styles.text}>Завантажте фото</Text>}
+    
     <TextInput placeholder="Назва..." 
     style={{...styles.textInput, paddingLeft: 16}}
     onFocus={() => setisKeyboardShown(true)}

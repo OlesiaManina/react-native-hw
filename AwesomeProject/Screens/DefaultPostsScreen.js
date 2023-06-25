@@ -26,8 +26,9 @@ import {
         <View style={styles.container}>
            <FlatList data={posts} keyExtractor={(item, index) => index.toString()}
            renderItem={({item}) => {
+
             const name = item.formData.name;
-            const location = item.location;
+            const location = item.locationCoords;
 
            return (<View style={styles.postContainer}>
             <Image source={{uri: item.photo}} style={styles.image}/>
