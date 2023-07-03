@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
 import { 
   StyleSheet, 
   Text, 
@@ -12,7 +12,10 @@ import {
   Alert,
   Platform} from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from "react-redux";
 import bgImage from '../assets/PhotoBg.png';
+import { logIn } from "../redux/auth/authOperations";
+import { selectIsLoggedIn } from "../redux/auth/selectors";
 
 const initialData = {
   email: '',
@@ -24,7 +27,20 @@ export const LoginScreen = () => {
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [formData, setFormData] = useState(initialData);
 
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  console.log('isLoggedIn', isLoggedIn);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.navigate('Home', {
+        screen: 'PostsScreen'
+     });
+    } 
+  }, [isLoggedIn])
+
 
   const keyBoardHide = () => {
     Keyboard.dismiss(); 
@@ -48,6 +64,9 @@ export const LoginScreen = () => {
     } else {
       console.log(formData);
       setFormData(initialData);
+      dispatch(logIn({
+        email: formData.email,
+        password: formData.password}));
       navigation.navigate('Home', {
       screen: 'PostsScreen'
    });

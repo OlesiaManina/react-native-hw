@@ -16,9 +16,12 @@ import {
 import bgImage from '../assets/PhotoBg.png';
 import avatar from '../assets/avatar.png';
 import { AntDesign } from '@expo/vector-icons';
+import { useDispatch } from "react-redux";
+import { register } from "../redux/auth/authOperations";
+
 
 const initialData = {
-  login: '',
+  nickName: '',
   email: '',
   password: ''
 }
@@ -30,6 +33,7 @@ export const RegistrationScreen = () => {
   const [formData, setFormData] = useState(initialData);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const keyBoardHide = () => {
     Keyboard.dismiss(); 
@@ -50,13 +54,16 @@ const onSubmit = () => {
       Alert.alert(
         "Please fill in the fields!",
       );
-    } else if (!formData.login) {
+    } else if (!formData.nickName) {
       Alert.alert(
         "Don't forget your login))",
       );
     } else {
       console.log(formData);
       setFormData(initialData);
+      dispatch(register({nickName: formData.nickName,
+      email: formData.email,
+      password: formData.password}));
       navigation.navigate('Home', {
       screen: 'PostsScreen'
    });
@@ -82,8 +89,8 @@ const onSubmit = () => {
       </View>
         <Text style={styles.header}>Реєстрація</Text>
         <TextInput style={styles.textInput} placeholder="Логін" onFocus={() => setisKeyboardShown(true)}
-        value={formData.login}
-        onChangeText={(value) => setFormData((prevState) => ({...prevState, login: value}))}
+        value={formData.nickName}
+        onChangeText={(value) => setFormData((prevState) => ({...prevState, nickName: value}))}
         />
         <TextInput style={styles.textInput} placeholder="Адреса електронної пошти" onFocus={() => setisKeyboardShown(true)}
         value={formData.email}

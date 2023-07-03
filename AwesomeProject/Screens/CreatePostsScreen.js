@@ -11,6 +11,9 @@ import {
     KeyboardAvoidingView,
     TouchableWithoutFeedback,
  } from "react-native";
+ import { ref, put, getDownloadURL } from "firebase/storage";
+ import { updateDoc, doc, collection, addDoc } from "firebase/firestore";
+ import { storage, db } from "../firebase/config.js";
  import { Camera } from "expo-camera";
  import * as Location from "expo-location";
  import { useNavigation } from '@react-navigation/native';
@@ -32,17 +35,58 @@ import {
 
     const navigation = useNavigation();
 
+    useEffect(() => {
+      (async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          console.log("Permission to access location was denied");
+        }
+      })();
+    }, []);
+
     const keyBoardHide = () => {
       Keyboard.dismiss(); 
       setisKeyboardShown(false);
     }
 
-    const onSubmit = () => {
+    // console.log('formData', formData)
+
+    const onSubmit = async ()  => {
       keyBoardHide();
       if (photo) {
-        navigation.navigate('Публікації', {photo, formData, locationCoords});
-        setPhoto('');
-        setFormData(initialData);
+        try {
+          const docRef = await addDoc(collection(db, 'users'), {
+            first: 'Ada',
+            last: 'Lovelace',
+            born: 1815
+          });
+          console.log('Document written with ID: ', docRef.id);
+          
+          // const postRef = await addDoc(collection(db, "posts"), { title: "Sample Title", description: "Sample Description" });
+
+          
+        //   const postRef = await addDoc(collection(db, "posts"), formData);
+        //   console.log('postRef', postRef);
+        //   console.log('onSubmit works');
+
+        // const response = await fetch(photo);
+        // const blob = await response.blob();
+        // const photoRef = ref(storage, `posts/${postRef.id}/photo.jpg`);
+        // await put(photoRef, blob);
+  
+        // const photoURL = await getDownloadURL(photoRef);
+        // console.log('photoURL', photoURL);
+  
+        // await updateDoc(doc(db, "posts", postRef.id), { photoURL });
+        } catch (e) {
+          console.error('Error adding document: ', e);
+            throw e;
+        }
+        
+        navigation.navigate('Публікації',
+         {photo, formData, locationCoords}
+         );
+        clearScreen();
       }
     }
 
