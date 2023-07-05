@@ -45,7 +45,8 @@ export const Home = () => {
                 </TouchableOpacity>)}}/>
 
           <Tabs.Screen name="ProfileScreen" component={ProfileScreen} 
-          options={{tabBarIcon: ({focused, size, color}) => (<FontAwesome5 name="user" size={24} color="#212121" />)}}/>
+          options={{tabBarIcon: ({focused, size, color}) => (<FontAwesome5 name="user" size={24} color="#212121" />),
+          headerShown: false}}/>
         </Tabs.Navigator>
   )};
 

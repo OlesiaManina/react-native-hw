@@ -17,7 +17,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "jsEngine": "jsc"
+      "jsEngine": "jsc",
+      "permissions": {
+        "infoPlist": {
+          "NSAppTransportSecurity": {
+            "NSAllowsArbitraryLoads": true
+          }
+        }
+      }
     },
   
     "android": {
@@ -25,6 +32,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "permissions": [
+        "INTERNET"
+      ],
       "jsEngine": "jsc"
     },
     "web": {

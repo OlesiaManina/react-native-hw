@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { 
   StyleSheet, 
   Text, 
@@ -16,8 +16,9 @@ import {
 import bgImage from '../assets/PhotoBg.png';
 import avatar from '../assets/avatar.png';
 import { AntDesign } from '@expo/vector-icons';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { register } from "../redux/auth/authOperations";
+import { selectIsLoggedIn } from "../redux/auth/selectors";
 
 
 const initialData = {
@@ -32,8 +33,17 @@ export const RegistrationScreen = () => {
   const [isPasswordSecure, setIsPasswordSecure] = useState(true);
   const [formData, setFormData] = useState(initialData);
 
+  const isLoggedIn = useSelector(selectIsLoggedIn);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.navigate('Home', {
+        screen: 'PostsScreen'
+     });
+    } 
+  }, [isLoggedIn])
 
   const keyBoardHide = () => {
     Keyboard.dismiss(); 

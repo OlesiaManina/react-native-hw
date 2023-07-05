@@ -33,13 +33,7 @@ export const PostsScreen = () => {
     headerLeft:  () => false}}
     />
     <NestedScreen.Screen name='Локація' component={MapScreen}/>
-    <NestedScreen.Screen name='Коментарі' component={CommentsScreen} 
-    // setOptions={{
-    //     // tabBarStyle: [{ display: "none" }],
-    //     // tabBarStyle: {display: "none"}
-    //     tabBarVisible: false
-    //     }}
-        />
+    <NestedScreen.Screen name='Коментарі' component={CommentsScreen}/>
     </NestedScreen.Navigator>
 
     )

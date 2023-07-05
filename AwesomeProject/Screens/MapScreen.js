@@ -17,7 +17,7 @@ export const MapScreen = ({route}) => {
              }}>
                 <Marker 
              coordinate={{ latitude: location.latitude, longitude: location.longitude}}
-             title={route.params.name}/>
+             title={route.params.locationName}/>
              </MapView>}
              </View>
              )
