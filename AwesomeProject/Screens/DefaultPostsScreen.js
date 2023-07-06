@@ -20,12 +20,13 @@ import {
     const navigation = useNavigation();
     const isFocused = useIsFocused(); 
 
+    console.log('isFocused', isFocused)
 
     useEffect(() => {
         if (isFocused) {
             getDataFromFirestore(); 
           }
-    }, [isFocused])
+    }, [])
 
     const getDataFromFirestore = async () => {
         try {

@@ -93,7 +93,7 @@ import {
     
     const onSubmit = async () => {
       keyBoardHide();
-      uploadPostToServer();
+      await uploadPostToServer();
       
       navigation.navigate('Публікації');
          clearScreen();
